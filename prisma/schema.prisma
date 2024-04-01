@@ -20,6 +20,24 @@ model User {
   @@map("users")
 }
 
+// pet model
+model Pet {
+  id                    String      @id @default(uuid())
+  name                  String
+  species               String
+  breed                 String
+  age                   Int
+  size                  String
+  location              String
+  description           String
+  temperament           String
+  medicalHistory        String
+  adoptionRequirements String
+  
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
 
+  @@map("pets")
+}
 
 
