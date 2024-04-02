@@ -9,35 +9,54 @@ datasource db {
 
 // schema.prisma user
 model User {
-  id          String        @id @default(uuid())
-  name        String
-  email       String        @unique
-  password    String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
+  id               String            @id @default(uuid())
+  name             String
+  email            String            @unique
+  password         String
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  adoptionRequests AdoptionRequest[]
 
   @@map("users")
 }
 
 // pet model
 model Pet {
-  id                    String      @id @default(uuid())
-  name                  String
-  species               String
-  breed                 String
-  age                   Int
-  size                  String
-  location              String
-  description           String
-  temperament           String
-  medicalHistory        String
+  id                   String            @id @default(uuid())
+  name                 String
+  species              String
+  breed                String
+  age                  Int
+  size                 String
+  location             String
+  description          String
+  temperament          String
+  medicalHistory       String
   adoptionRequirements String
-  
-  createdAt             DateTime    @default(now())
-  updatedAt             DateTime    @updatedAt
+  adoptionRequests     AdoptionRequest[]
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
 
   @@map("pets")
 }
 
+// Define the data model for adoption requests
+model AdoptionRequest {
+  id                     String   @id @default(uuid())
+  userId                 String @default("11591a3a-2be6-4765-b23e-ca565efe830f")
+  petId                  String
+  status                 AdoptionRequestStatus @default(PENDING)
+  petOwnershipExperience String
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 
+  user User @relation(fields: [userId], references: [id])
+  pet  Pet  @relation(fields: [petId], references: [id])
+}
+
+
+enum AdoptionRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
