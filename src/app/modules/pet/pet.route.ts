@@ -20,10 +20,19 @@ router.put(
     "/pets/:id",  PetController.updatePet
 );
 
-// add pet request
+// get pet adoption request
+router.get (
+    "/adoption-requests",  PetController.getPetAdoptionRequest
+);
+// add pet adoption  request
 router.post (
     "/adoption-request",  PetController.petAdoptionRequest
 );
+
+// Update Adoption Request Status
+router.put(
+    "/adoption-requests/:requestId", PetController.adoptionRequestStatusUpdate
+)
 
  
 

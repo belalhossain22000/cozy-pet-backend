@@ -32,7 +32,7 @@ const updatePet = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id
     const data = req.body
 
-    const result = await petServices.updatePete(id,data)
+    const result = await petServices.updatePete(id, data)
     sendResponse(res, {
         success: true,
         statusCode: 201,
@@ -40,6 +40,7 @@ const updatePet = catchAsync(async (req: Request, res: Response) => {
         data: result
     })
 });
+
 // pet adoption request
 const petAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
 
@@ -52,9 +53,36 @@ const petAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
     })
 });
 
+// pet adoption request from db
+const getPetAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
+
+    const result = await petServices.petAdoptionRequestFromDb()
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Adoption requests retrieved successfully",
+        data: result
+    })
+});
+// Update Adoption Request Status
+const adoptionRequestStatusUpdate = catchAsync(async (req: Request, res: Response) => {
+
+    const id = req.params.requestId
+
+    const result = await petServices.updateAdoptionRequestStatus(id,req.body)
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Adoption request updated successfully",
+        data: result
+    })
+});
+
 export const PetController = {
     AddPet,
     getAllPet,
     updatePet,
-    petAdoptionRequest
+    petAdoptionRequest,
+    getPetAdoptionRequest,
+    adoptionRequestStatusUpdate
 }

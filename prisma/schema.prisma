@@ -40,23 +40,22 @@ model Pet {
   @@map("pets")
 }
 
-// Define the data model for adoption requests
+//  data model for adoption requests
 model AdoptionRequest {
-  id                     String   @id @default(uuid())
-  userId                 String @default("11591a3a-2be6-4765-b23e-ca565efe830f")
+  id                     String                @id @default(uuid())
+  userId                 String                @default("11591a3a-2be6-4765-b23e-ca565efe830f")
   petId                  String
   status                 AdoptionRequestStatus @default(PENDING)
   petOwnershipExperience String
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
 
   user User @relation(fields: [userId], references: [id])
   pet  Pet  @relation(fields: [petId], references: [id])
 }
 
-
 enum AdoptionRequestStatus {
   PENDING
-  ACCEPTED
+  APPROVED
   REJECTED
 }

@@ -1,3 +1,4 @@
+import { AdoptionRequestStatus } from "@prisma/client"
 import prisma from "../../../shared/prisma"
 
 
@@ -57,13 +58,15 @@ const updatePete = async (id: string, data: any) => {
     }
 };
 
+
+// pet adoption request 
 const petAdoptionRequestIntoDb = async (payload: any) => {
     const isPetExist = await prisma.pet.findUniqueOrThrow({
         where: {
             id: payload?.petId
         }
     })
-    console.log(isPetExist)
+
     if (isPetExist) {
         const result = await prisma.adoptionRequest.create({
             data: payload
@@ -72,9 +75,38 @@ const petAdoptionRequestIntoDb = async (payload: any) => {
     }
 }
 
+
+// get adoption request from db
+
+const petAdoptionRequestFromDb = async () => {
+
+
+    const result = await prisma.adoptionRequest.findMany()
+    return result
+}
+
+
+// Update Adoption Request Status
+const updateAdoptionRequestStatus = async (id: string, data: { status: keyof typeof AdoptionRequestStatus }) => {
+
+    const isRequestExist = await prisma.adoptionRequest.findUniqueOrThrow({
+        where: { id }
+    });
+
+    console.log(data)
+    if (isRequestExist) {
+        const updatePetRequestStatus = await prisma.adoptionRequest.update({
+            where: { id },
+            data
+        });
+        return updatePetRequestStatus;
+    }
+};
 export const petServices = {
     addPetIntoDb,
     getPetFromDb,
     updatePete,
-    petAdoptionRequestIntoDb
+    petAdoptionRequestIntoDb,
+    petAdoptionRequestFromDb,
+    updateAdoptionRequestStatus
 }
