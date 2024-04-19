@@ -2,6 +2,8 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { PetController } from './pet.controller';
 import auth from '../../middlewares/auth';
+import validateRequest from '../../middlewares/validateRequest';
+import { petValidationSchema } from './pet.validation';
 
 
 
@@ -14,12 +16,12 @@ router.get(
 
 // add pet request
 router.post(
-    "/pets", auth(), PetController.AddPet
+    "/pets", auth(), validateRequest(petValidationSchema.petAddValidationSchema), PetController.AddPet
 );
 
 // update pet
 router.put(
-    "/pets/:petId", auth(), PetController.updatePet
+    "/pets/:petId", auth(), validateRequest(petValidationSchema.updatePetValidationSchema), PetController.updatePet
 );
 
 // get pet adoption request
@@ -28,12 +30,12 @@ router.get(
 );
 // add pet adoption  request
 router.post(
-    "/adoption-request", auth(), PetController.petAdoptionRequest
+    "/adoption-request", auth(), validateRequest(petValidationSchema.petOwnershipExperienceSchema), PetController.petAdoptionRequest
 );
 
 // Update Adoption Request Status
 router.put(
-    "/adoption-requests/:requestId", auth(), PetController.adoptionRequestStatusUpdate
+    "/adoption-requests/:requestId", auth(), validateRequest(petValidationSchema.adoptionRequestSchema), PetController.adoptionRequestStatusUpdate
 )
 
 
