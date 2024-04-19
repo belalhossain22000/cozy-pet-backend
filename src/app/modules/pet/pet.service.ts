@@ -60,7 +60,7 @@ const updatePete = async (id: string, data: any) => {
 
 
 // pet adoption request 
-const petAdoptionRequestIntoDb = async (payload: any) => {
+const petAdoptionRequestIntoDb = async (payload: any, userId: string) => {
     const isPetExist = await prisma.pet.findUniqueOrThrow({
         where: {
             id: payload?.petId
@@ -69,7 +69,7 @@ const petAdoptionRequestIntoDb = async (payload: any) => {
 
     if (isPetExist) {
         const result = await prisma.adoptionRequest.create({
-            data: payload
+            data: { ...payload, userId }
         })
         return result
     }

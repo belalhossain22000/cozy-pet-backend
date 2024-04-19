@@ -6,7 +6,7 @@ import config from '../../../config';
 
 const registerUser = async (payload: any) => {
     const hashedPassword: string = await bcrypt.hash(payload.password, 12)
-   
+
     const result = await prisma.$transaction(async (prisma) => {
 
         const user = await prisma.user.create({
@@ -18,11 +18,11 @@ const registerUser = async (payload: any) => {
         });
 
         const { password, ...userWithoutPassword } = user;
-        
+
         return userWithoutPassword;
 
     });
-    
+
     return result;
 };
 
@@ -30,35 +30,49 @@ const registerUser = async (payload: any) => {
 // get user profile
 const getMyProfile = async (userToken: string) => {
     const decodedToken = jwtHelpers.verifyToken(userToken, config.jwt.jwt_secret!);
-    console.log(decodedToken);
-    
+
     // Getting user data
     const userProfile = await prisma.user.findUnique({
         where: {
-            id: decodedToken.id  
+            id: decodedToken.id
         },
-       
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            createdAt: true,
+            updatedAt: true
+        }
     });
 
-    return userProfile; 
+
+
+    return userProfile;
 }
 
 
 // update user profile
-const updateMyProfile =  async (userToken: string,payload:any) => {
-    const decodedToken = jwtHelpers.verifyToken(userToken, config.jwt.jwt_secret!);
+const updateMyProfile = async (userToken: string, payload: any) => {
     
+    const decodedToken = jwtHelpers.verifyToken(userToken, config.jwt.jwt_secret!);
 
-    console.log(decodedToken);
- // Getting user data
+
+    
     const userProfile = await prisma.user.update({
         where: {
-           id: decodedToken.id  
+            id: decodedToken.id
         },
-        data:payload
+        data: payload,
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            createdAt: true,
+            updatedAt: true
+        }
     });
 
-    return userProfile 
+    return userProfile
 }
 
 

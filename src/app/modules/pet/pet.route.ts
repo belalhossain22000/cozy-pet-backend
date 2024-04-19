@@ -1,39 +1,41 @@
 
 import express, { NextFunction, Request, Response } from 'express';
 import { PetController } from './pet.controller';
+import auth from '../../middlewares/auth';
 
- 
+
 
 const router = express.Router();
 
 // get pet  
 router.get(
-    "/pets",  PetController.getAllPet
+    "/pets", PetController.getAllPet
 );
 
 // add pet request
 router.post(
-    "/pets",  PetController.AddPet
+    "/pets", auth(), PetController.AddPet
 );
-// add pet request
+
+// update pet
 router.put(
-    "/pets/:id",  PetController.updatePet
+    "/pets/:petId", auth(), PetController.updatePet
 );
 
 // get pet adoption request
-router.get (
-    "/adoption-requests",  PetController.getPetAdoptionRequest
+router.get(
+    "/adoption-requests", auth(), PetController.getPetAdoptionRequest
 );
 // add pet adoption  request
-router.post (
-    "/adoption-request",  PetController.petAdoptionRequest
+router.post(
+    "/adoption-request", auth(), PetController.petAdoptionRequest
 );
 
 // Update Adoption Request Status
 router.put(
-    "/adoption-requests/:requestId", PetController.adoptionRequestStatusUpdate
+    "/adoption-requests/:requestId", auth(), PetController.adoptionRequestStatusUpdate
 )
 
- 
+
 
 export const petRoutes = router;

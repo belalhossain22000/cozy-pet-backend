@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import { petServices } from "./pet.service";
+import { JwtPayload } from "jsonwebtoken";
 
 
 // pet add controller
@@ -15,6 +16,7 @@ const getAllPet = catchAsync(async (req: Request, res: Response) => {
         data: result
     })
 });
+
 // pet add controller
 const AddPet = catchAsync(async (req: Request, res: Response) => {
 
@@ -26,10 +28,10 @@ const AddPet = catchAsync(async (req: Request, res: Response) => {
         data: result
     })
 });
-// pet add controller
+// pet update controller
 const updatePet = catchAsync(async (req: Request, res: Response) => {
 
-    const id = req.params.id
+    const id = req.params.petId
     const data = req.body
 
     const result = await petServices.updatePete(id, data)
@@ -44,13 +46,18 @@ const updatePet = catchAsync(async (req: Request, res: Response) => {
 // pet adoption request
 const petAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
 
-    const result = await petServices.petAdoptionRequestIntoDb(req.body)
-    sendResponse(res, {
-        success: true,
-        statusCode: 201,
-        message: "Adoption request submitted successfully",
-        data: result
-    })
+    const usrId = req.user ? req.user.id : undefined;
+
+    if (usrId !== undefined) {
+
+        const result = await petServices.petAdoptionRequestIntoDb(req.body, usrId)
+        sendResponse(res, {
+            success: true,
+            statusCode: 201,
+            message: "Adoption request submitted successfully",
+            data: result
+        })
+    }
 });
 
 // pet adoption request from db
@@ -69,7 +76,7 @@ const adoptionRequestStatusUpdate = catchAsync(async (req: Request, res: Respons
 
     const id = req.params.requestId
 
-    const result = await petServices.updateAdoptionRequestStatus(id,req.body)
+    const result = await petServices.updateAdoptionRequestStatus(id, req.body)
     sendResponse(res, {
         success: true,
         statusCode: 200,

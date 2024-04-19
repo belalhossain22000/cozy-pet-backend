@@ -1,19 +1,20 @@
 import express from 'express';
 import { userController } from './user.controller';
- 
+import auth from '../../middlewares/auth';
+
 
 const router = express.Router();
 
 router.post(
-    "/register",userController.registerUser 
+    "/register", userController.registerUser
 );
 router.get(
-    "/profile",userController.getMyProfile
+    "/profile", auth(), userController.getMyProfile
 );
 router.put(
-    "/profile",userController.updateMyProfile
+    "/profile",auth(), userController.updateMyProfile
 );
 
- 
+
 
 export const userRoutes = router;
