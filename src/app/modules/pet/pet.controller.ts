@@ -3,12 +3,16 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import { petServices } from "./pet.service";
 import { JwtPayload } from "jsonwebtoken";
+import pick from "../../../shared/pick";
+import { petFilterableFields } from "./pet.constant";
 
 
 // pet add controller
 const getAllPet = catchAsync(async (req: Request, res: Response) => {
+    const filters = pick(req.query, petFilterableFields);
+    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder'])
 
-    const result = await petServices.getPetFromDb()
+    const result = await petServices.getPetFromDb(filters,options)
     sendResponse(res, {
         success: true,
         statusCode: 200,
