@@ -5,6 +5,7 @@ import { petServices } from "./pet.service";
 import { JwtPayload } from "jsonwebtoken";
 import pick from "../../../shared/pick";
 import { petFilterableFields } from "./pet.constant";
+import { clearScreenDown } from "readline";
 
 
 // pet add controller
@@ -49,6 +50,8 @@ const updatePet = catchAsync(async (req: Request, res: Response) => {
 
 // pet adoption request
 const petAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
+
+    console.log(req)
 
     const usrId = req.user ? req.user.id : undefined;
 

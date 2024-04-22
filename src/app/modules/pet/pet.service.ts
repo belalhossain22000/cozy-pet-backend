@@ -157,7 +157,8 @@ const updateAdoptionRequestStatus = async (id: string, data: { status: keyof typ
         where: { id }
     });
 
-    console.log(data)
+    console.log(isRequestExist)
+
     if (isRequestExist) {
         const updatePetRequestStatus = await prisma.adoptionRequest.update({
             where: { id },

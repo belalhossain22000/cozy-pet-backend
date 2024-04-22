@@ -23,6 +23,7 @@ const registerUser = async (payload: any) => {
 
     });
 
+    
     return result;
 };
 
