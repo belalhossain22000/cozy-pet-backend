@@ -5,6 +5,7 @@ import { paginationHelper } from "../../../helpars/paginationHelper";
 import { petSearchAbleFields } from "./pet.constant";
 
 
+// get all pets from db
 const getPetFromDb = async (params: any, options: IPaginationOptions) => {
     const { page, limit, skip } = paginationHelper.calculatePagination(options);
     const { searchTerm, ...filterData } = params;
@@ -74,7 +75,17 @@ const getPetFromDb = async (params: any, options: IPaginationOptions) => {
     };
 }
 
-
+const getSinglePetFromDb = async (id: string) => {
+    // Check if the pet exists
+    const isPetExist = await prisma.pet.findUniqueOrThrow({
+        where: {
+            id
+        }
+    });
+    if (isPetExist) {
+        return isPetExist
+    }
+}
 
 // pet add service function
 const addPetIntoDb = async (payload: any) => {
@@ -99,7 +110,6 @@ const addPetIntoDb = async (payload: any) => {
 }
 
 // update pet using id
-
 const updatePete = async (id: string, data: any) => {
 
     // Check if the pet exists
@@ -141,7 +151,6 @@ const petAdoptionRequestIntoDb = async (payload: any, userId: string) => {
 
 
 // get adoption request from db
-
 const petAdoptionRequestFromDb = async () => {
 
 
@@ -173,5 +182,6 @@ export const petServices = {
     updatePete,
     petAdoptionRequestIntoDb,
     petAdoptionRequestFromDb,
-    updateAdoptionRequestStatus
+    updateAdoptionRequestStatus,
+    getSinglePetFromDb
 }

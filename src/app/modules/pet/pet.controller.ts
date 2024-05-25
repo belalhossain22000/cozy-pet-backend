@@ -13,7 +13,20 @@ const getAllPet = catchAsync(async (req: Request, res: Response) => {
     const filters = pick(req.query, petFilterableFields);
     const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder'])
 
-    const result = await petServices.getPetFromDb(filters,options)
+    const result = await petServices.getPetFromDb(filters, options)
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Pets retrieved successfully",
+        data: result
+    })
+});
+// pet add controller
+const getSingePet = catchAsync(async (req: Request, res: Response) => {
+
+    const id = req.params.id
+
+    const result = await petServices.getSinglePetFromDb(id)
     sendResponse(res, {
         success: true,
         statusCode: 200,
@@ -98,5 +111,6 @@ export const PetController = {
     updatePet,
     petAdoptionRequest,
     getPetAdoptionRequest,
-    adoptionRequestStatusUpdate
+    adoptionRequestStatusUpdate,
+    getSingePet
 }

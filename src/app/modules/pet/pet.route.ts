@@ -13,6 +13,10 @@ const router = express.Router();
 router.get(
     "/pets", PetController.getAllPet
 );
+// get pet  
+router.get(
+    "/pets/:id", PetController.getSingePet
+);
 
 // add pet request
 router.post(
