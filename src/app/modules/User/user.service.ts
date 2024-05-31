@@ -17,7 +17,8 @@ const registerUser = async (payload: any) => {
             data: {
                 name: payload.name,
                 email: payload.email,
-                password: hashedPassword
+                password: hashedPassword,
+                role: "USER"
             }
         });
 
@@ -88,6 +89,7 @@ const getMyProfile = async (userToken: string) => {
             id: true,
             name: true,
             email: true,
+            role: true,
             createdAt: true,
             updatedAt: true
         }
@@ -101,14 +103,14 @@ const getMyProfile = async (userToken: string) => {
 const getAdoptionFromDb = async (token: string) => {
 
     const decodedToken = jwtHelpers.verifyToken(token, config.jwt.jwt_secret!);
-   
+
     const result = await prisma.adoptionRequest.findMany({
         where: {
             userId: decodedToken.id
         }
     })
 
-   
+
 
     if (!result) {
         throw new ApiError(httpStatus.NOT_FOUND, "No Adoption Request Found")
@@ -121,18 +123,21 @@ const getAdoptionFromDb = async (token: string) => {
 const updateMyProfile = async (userToken: string, payload: any) => {
 
     const decodedToken = jwtHelpers.verifyToken(userToken, config.jwt.jwt_secret!);
-
-
+    const { role, ...restPayload } = payload
+    // if (payload.role) {
+    //     throw new ApiError(httpStatus.UNAUTHORIZED, "YOu cannot update your role")
+    // }
 
     const userProfile = await prisma.user.update({
         where: {
             id: decodedToken.id
         },
-        data: payload,
+        data: restPayload,
         select: {
             id: true,
             name: true,
             email: true,
+            role: true,
             createdAt: true,
             updatedAt: true
         }

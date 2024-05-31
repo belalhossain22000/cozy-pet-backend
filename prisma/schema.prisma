@@ -15,6 +15,7 @@ model User {
   password         String
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
+  role             Role              @default(USER)
   adoptionRequests AdoptionRequest[]
 
   @@map("users")
@@ -43,7 +44,7 @@ model Pet {
 //  data model for adoption requests
 model AdoptionRequest {
   id                     String                @id @default(uuid())
-  userId                 String               
+  userId                 String
   petId                  String
   status                 AdoptionRequestStatus @default(PENDING)
   petOwnershipExperience String
@@ -52,6 +53,11 @@ model AdoptionRequest {
 
   user User @relation(fields: [userId], references: [id])
   pet  Pet  @relation(fields: [petId], references: [id])
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 enum AdoptionRequestStatus {
