@@ -28,6 +28,11 @@ router.put(
     "/pets/:petId", auth(), validateRequest(petValidationSchema.updatePetValidationSchema), PetController.updatePet
 );
 
+// Update Adoption Request Status
+router.delete(
+    "/pets/delete/:petId", auth(),  PetController.deletePet
+)
+
 // get pet adoption request
 router.get(
     "/adoption-requests", auth(), PetController.getPetAdoptionRequest
@@ -41,6 +46,9 @@ router.post(
 router.put(
     "/adoption-requests/:requestId", auth(), validateRequest(petValidationSchema.adoptionRequestSchema), PetController.adoptionRequestStatusUpdate
 )
+
+
+
 
 
 

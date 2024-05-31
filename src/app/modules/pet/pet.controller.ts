@@ -60,6 +60,19 @@ const updatePet = catchAsync(async (req: Request, res: Response) => {
         data: result
     })
 });
+// pet delete controller
+const deletePet = catchAsync(async (req: Request, res: Response) => {
+
+    const id = req.params.petId
+
+    const result = await petServices.deletePetFromDb(id)
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Pet profile Deleted successfully",
+        data: result
+    })
+});
 
 // pet adoption request
 const petAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
@@ -112,5 +125,6 @@ export const PetController = {
     petAdoptionRequest,
     getPetAdoptionRequest,
     adoptionRequestStatusUpdate,
-    getSingePet
+    getSingePet,
+    deletePet
 }

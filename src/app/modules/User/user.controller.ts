@@ -3,6 +3,8 @@ import { Request, RequestHandler, Response } from "express";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import { userServices } from "./user.service";
+import ApiError from "../../errors/ApiError";
+import httpStatus from "http-status";
 
 
 const registerUser = catchAsync(async (req: Request, res: Response) => {
@@ -12,6 +14,48 @@ const registerUser = catchAsync(async (req: Request, res: Response) => {
         success: true,
         statusCode: 201,
         message: "User registered successfully",
+        data: result
+    })
+});
+const getAllUsers = catchAsync(async (req: Request, res: Response) => {
+
+    const result = await userServices.getAllUsersFromDb()
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "User retrieved  successfully",
+        data: result
+    })
+});
+
+// update use by id
+const updateUser = catchAsync(async (req: Request, res: Response) => {
+
+    const data = req.body
+    const id = req.params.id
+
+    const result = await userServices.updateUserIntoDb(data, id)
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "User updated  successfully",
+        data: result
+    })
+});
+// update use by id
+const getAdoption = catchAsync(async (req: Request, res: Response) => {
+
+   const token = req.headers.authorization
+
+   if(!token){
+    throw new ApiError(httpStatus.UNAUTHORIZED,"unauthorize access denied")
+   }
+
+    const result = await userServices.getAdoptionFromDb(token)
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "User updated  successfully",
         data: result
     })
 });
@@ -32,11 +76,11 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
 
 // update user profile
 const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
-    
+
     const userToken = req.headers.authorization as string
 
     const result = await userServices.updateMyProfile(userToken, req.body)
-   
+
     sendResponse(res, {
         success: true,
         statusCode: 201,
@@ -51,6 +95,8 @@ const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
 export const userController = {
     registerUser,
     getMyProfile,
-    updateMyProfile
-
+    updateMyProfile,
+    getAllUsers,
+    updateUser,
+    getAdoption
 }

@@ -132,6 +132,27 @@ const updatePete = async (id: string, data: any) => {
     }
 };
 
+// delete pet 
+const deletePetFromDb = async (id: string) => {
+    const existingPet = await prisma.pet.findUnique({
+        where: {
+            id
+        }
+    });
+
+    if (!existingPet) {
+        throw new Error(`Pet with ID ${id} does not exist`);
+    }
+
+    const deletedPet = await prisma.pet.delete({
+        where: {
+            id
+        }
+    });
+
+    return deletedPet;
+};
+
 
 // pet adoption request 
 const petAdoptionRequestIntoDb = async (payload: any, userId: string) => {
@@ -183,5 +204,6 @@ export const petServices = {
     petAdoptionRequestIntoDb,
     petAdoptionRequestFromDb,
     updateAdoptionRequestStatus,
-    getSinglePetFromDb
+    getSinglePetFromDb,
+    deletePetFromDb
 }
