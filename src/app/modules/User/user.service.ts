@@ -18,7 +18,8 @@ const registerUser = async (payload: any) => {
                 name: payload.name,
                 email: payload.email,
                 password: hashedPassword,
-                role: "USER"
+                role: "USER",
+                isActive: true
             }
         });
 
@@ -39,6 +40,8 @@ const getAllUsersFromDb = async () => {
             id: true,
             name: true,
             email: true,
+            role: true,
+            isActive: true,
             createdAt: true,
             updatedAt: true
         }
@@ -50,7 +53,7 @@ const getAllUsersFromDb = async () => {
 }
 
 const updateUserIntoDb = async (payload: any, userId: string) => {
-
+    console.log(payload, userId)
     const result = await prisma.user.update({
         where: {
             id: userId
@@ -60,6 +63,8 @@ const updateUserIntoDb = async (payload: any, userId: string) => {
             id: true,
             name: true,
             email: true,
+            role: true,
+            isActive: true,
             createdAt: true,
             updatedAt: true
 
@@ -107,16 +112,22 @@ const getAdoptionFromDb = async (token: string) => {
     const result = await prisma.adoptionRequest.findMany({
         where: {
             userId: decodedToken.id
+        },
+        include: {
+            pet: true
         }
     })
-
-
-
+    console.log(result)
     if (!result) {
         throw new ApiError(httpStatus.NOT_FOUND, "No Adoption Request Found")
     }
+    const pets = result.map(request => ({
+        id: request.pet.id,
+        name: request.pet.name,
+        createdAt: request.createdAt
+    }));
 
-    return result
+    return pets
 }
 
 // update user profile

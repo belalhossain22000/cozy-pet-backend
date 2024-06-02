@@ -55,7 +55,7 @@ const getAdoption = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         success: true,
         statusCode: 200,
-        message: "User updated  successfully",
+        message: "adoption retrieved successfully",
         data: result
     })
 });
