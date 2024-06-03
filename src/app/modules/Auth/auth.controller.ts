@@ -6,7 +6,7 @@ import httpStatus from "http-status";
 import ApiError from "../../errors/ApiError";
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
-
+    console.log(req.body)
     const result = await AuthServices.loginUser(req.body);
 
     sendResponse(res, {
@@ -21,12 +21,12 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 const changePassword = catchAsync(async (req: Request, res: Response) => {
 
     const token = req.headers.authorization
-    
-if(!token){
-    throw new ApiError(httpStatus.UNAUTHORIZED,"unauthorized access")
-}
 
-    
+    if (!token) {
+        throw new ApiError(httpStatus.UNAUTHORIZED, "unauthorized access")
+    }
+
+
 
     const result = await AuthServices.changePasswordIntoDb(req.body, token);
 

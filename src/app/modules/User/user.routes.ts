@@ -3,28 +3,29 @@ import { userController } from './user.controller';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 import { userValidations } from './user.validation';
+import { Role } from '@prisma/client';
 
 
 const router = express.Router();
 
 router.get(
-    "/users", auth(), userController.getAllUsers
+    "/users", auth(Role.ADMIN), userController.getAllUsers
 );
 
 router.put(
-    "/user/:id", auth(), userController.updateUser
+    "/user/:id", auth(Role.ADMIN,Role.USER), userController.updateUser
 );
 router.get(
-    "/user/adoption", auth(), userController.getAdoption
+    "/user/adoption", auth(Role.ADMIN,Role.USER), userController.getAdoption
 );
 router.post(
     "/register", validateRequest(userValidations.registerUserValidationSchema), userController.registerUser
 );
 router.get(
-    "/profile", auth(), userController.getMyProfile
+    "/profile", auth(Role.ADMIN,Role.USER), userController.getMyProfile
 );
 router.put(
-    "/profile", auth(), validateRequest(userValidations.updateUserValidationSchema), userController.updateMyProfile
+    "/profile", auth(Role.ADMIN,Role.USER), validateRequest(userValidations.updateUserValidationSchema), userController.updateMyProfile
 );
 
 

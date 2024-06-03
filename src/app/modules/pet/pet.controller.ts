@@ -77,7 +77,7 @@ const deletePet = catchAsync(async (req: Request, res: Response) => {
 // pet adoption request
 const petAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
 
-    console.log(req.body)
+
 
     const usrId = req.user ? req.user.id : undefined;
 
