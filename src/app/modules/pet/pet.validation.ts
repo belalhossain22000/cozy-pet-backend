@@ -4,6 +4,12 @@ const petAddValidationSchema = z.object({
     name: z.string({
         required_error: "Name is required!"
     }),
+    photo: z.string({
+        required_error: "photo url is required!"
+    }),
+    gender: z.string({
+        required_error: "gender is required!"
+    }),
     species: z.string({
         required_error: "Species is required!"
     }),

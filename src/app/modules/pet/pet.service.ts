@@ -93,6 +93,8 @@ const addPetIntoDb = async (payload: any) => {
     const result = await prisma.pet.create({
         data: {
             name: payload.name,
+            photo: payload.photo,
+            gender:payload.gender,
             species: payload.species,
             breed: payload.breed,
             age: payload.age,
@@ -111,7 +113,7 @@ const addPetIntoDb = async (payload: any) => {
 
 // update pet using id
 const updatePete = async (id: string, data: any) => {
-
+console.log(data)
     // Check if the pet exists
     const isPetExist = await prisma.pet.findUnique({
         where: {
