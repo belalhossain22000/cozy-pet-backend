@@ -37,7 +37,7 @@ router.delete(
 
 // get pet adoption request
 router.get(
-    "/adoption-requests", auth(Role.ADMIN,Role.USER), PetController.getPetAdoptionRequest
+    "/adoption-requests", auth(Role.ADMIN), PetController.getPetAdoptionRequest
 );
 // add pet adoption  request
 router.post(

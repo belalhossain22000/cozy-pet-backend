@@ -48,6 +48,7 @@ const getPetFromDb = async (params: any, options: IPaginationOptions) => {
             id: true,
             name: true,
             species: true,
+            photo: true,
             breed: true,
             age: true,
             size: true,
@@ -89,12 +90,11 @@ const getSinglePetFromDb = async (id: string) => {
 
 // pet add service function
 const addPetIntoDb = async (payload: any) => {
-
     const result = await prisma.pet.create({
         data: {
             name: payload.name,
             photo: payload.photo,
-            gender:payload.gender,
+            gender: payload.gender,
             species: payload.species,
             breed: payload.breed,
             age: payload.age,
@@ -113,7 +113,6 @@ const addPetIntoDb = async (payload: any) => {
 
 // update pet using id
 const updatePete = async (id: string, data: any) => {
-console.log(data)
     // Check if the pet exists
     const isPetExist = await prisma.pet.findUnique({
         where: {
@@ -189,7 +188,6 @@ const updateAdoptionRequestStatus = async (id: string, data: { status: keyof typ
         where: { id }
     });
 
-    console.log(isRequestExist)
 
     if (isRequestExist) {
         const updatePetRequestStatus = await prisma.adoptionRequest.update({

@@ -8,8 +8,8 @@ import cookieParser from 'cookie-parser';
 const app: Application = express();
 
 const corsOptions = {
-    origin: 'http://localhost:3001', // The client URL
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    origin: 'http://localhost:3001',
+    credentials: true, 
   };
 
 app.use(cors(corsOptions));

@@ -6,7 +6,6 @@ import httpStatus from "http-status";
 import ApiError from "../../errors/ApiError";
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
-    console.log(req.body)
     const result = await AuthServices.loginUser(req.body);
 
     sendResponse(res, {

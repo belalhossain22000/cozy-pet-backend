@@ -53,7 +53,6 @@ const getAllUsersFromDb = async () => {
 }
 
 const updateUserIntoDb = async (payload: any, userId: string) => {
-    console.log(payload, userId)
     const result = await prisma.user.update({
         where: {
             id: userId
@@ -117,13 +116,13 @@ const getAdoptionFromDb = async (token: string) => {
             pet: true
         }
     })
-    console.log(result)
     if (!result) {
         throw new ApiError(httpStatus.NOT_FOUND, "No Adoption Request Found")
     }
     const pets = result.map(request => ({
         id: request.pet.id,
         name: request.pet.name,
+        photo:request.pet.photo,
         createdAt: request.createdAt
     }));
 
